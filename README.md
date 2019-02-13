@@ -12,6 +12,7 @@ To build, drop an `.ovpn` file into the same directory with `entrypoint.sh`. Lab
 docker build . --tag <name of VPN Image>
 ```
 
+Be sure the name does not contain a slash.
 
 ## Instructions to Use ##
 
@@ -29,6 +30,11 @@ docker exec -it <name of VPN Image> /bin/bash
 ```
 
 Now you can access data through the VPN. Please note that DNS may not be completely working due to limitations with the container. Thus, www.google.com may not work but 8.8.8.8 will. 
+
+#### Finding ip address ####
+Use the nslookup utility to find an ip address. This must be ran on a computer that can resolve the IP address normally. For instance, one your host machine that has a vpn connection open, type `nslookup <address>`. This will give you the corresponding ip address. Be sure not to select the DNS server ip address. 
+
+When using the docker containers, then use the ip address found for the ssh connections.
 
 ### Stopping the VPN Client ###
 To stop the VPN, type:
