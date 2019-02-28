@@ -8,4 +8,7 @@ chmod 600 /dev/net/tun
 ## Setup proper dns routes
 echo "nameserver 1.1.1.1" > /etc/resolv.conf
 
-openvpn --config client.ovpn
+cd /vpn
+
+exec /bin/bash
+
