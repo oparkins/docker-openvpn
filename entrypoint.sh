@@ -10,5 +10,6 @@ echo "nameserver 1.1.1.1" > /etc/resolv.conf
 
 cd /vpn
 
-exec /bin/bash
-
+while true; do
+    danted
+done

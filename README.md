@@ -20,23 +20,22 @@ Be sure the name does not contain a slash.
 To run the image, use the following command. Please note that the command **must** be ran in the same directory as the openvpn client files.
 
 ```
-docker run --rm -it --cap-add=NET_ADMIN -v "$(pwd)":/vpn openvpn
+docker run --rm -d --cap-add=NET_ADMIN --sysctl net.ipv6.conf.all.disable_ipv6=0 --sysctl net.ipv6.conf.default.disable_ipv6=0 --sysctl net.ipv6.conf.lo.disable_ipv6=0  -p 127.0.0.1:<localhost port>:8085 -v "$(pwd)":/vpn openvpn
 ```
 *If you want to add volumes to the host machine, add normal volume arguments to the command above.* 
 
-The above command will run the container in the foreground. Then run the standard openvpn commands and precede with the normal openvpn commands. 
+The above command will run the container in the background. It will also forward a SOCKS5 proxy to the local machine on the specified port. This will allow applications to use the VPN tunnel if properly configured. See **Configuring Firefox with SOCKS Proxy** for more information.
 
-To run openvpn, either use the `screen` application or use the following command to open a new terminal:
+To run openvpn, use the following command to open a new terminal:
 
 ```
 docker exec -it <name of container> /bin/bash
 ```
 
-This will open another terminal session. 
-
-Either `screen` or another terminal will work fine. It depends on your personal workflow preference.
+This will open another terminal session. Navigate to the `/vpn` folder to find your files.
 
 You can access data through the VPN. Please note that DNS may not be completely working due to limitations with the container. Thus, www.google.com may not work but 8.8.8.8 will. 
+
 
 #### Finding ip address ####
 Use the nslookup utility to find an ip address. This must be ran on a computer that can resolve the IP address normally. For instance, one your host machine that has a vpn connection open, type `nslookup <address>`. This will give you the corresponding ip address. Be sure not to select the DNS server ip address. 
@@ -49,3 +48,12 @@ To stop the VPN, type:
 ```
 docker kill <name of VPN container>
 ```
+
+### Configuring Firefox with SOCKS Proxy ###
+Open `Firefox`. Go to `Preferences -> Network Settings`.
+
+When the settings dialog box opens, click `Manual proxy configuration`. Enter the details like:
+
+![Firefox Network Settings](images/firefox_network_preferences.png)
+
+*Be sure to use the same port that you specified in the original command instead of 8080 as shown in the picture*
